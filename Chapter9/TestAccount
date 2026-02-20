@@ -1,0 +1,86 @@
+/*
+ * A program that creates an account with a balance and an interest rate.
+ * The program will calculate the interest and display the new balance after deposits and withdrawals.
+ * Author: Emily Rhodes
+ * Class: TESD 1800
+*/
+
+class Account {
+    // Declare the variables for the id, balance, interest rate, and date created
+    private int id = 0;
+    private double balance = 0.0;
+    private double annualInterestRate = 0.0;
+    private java.util.Date dateCreated;
+    // No-arg constructor that creates a default account
+    Account() {
+        dateCreated = new java.util.Date();
+    }
+    // Constructor that creates an account with the specified id and balance
+    Account(int newId, double newBalance) {
+        id = newId;
+        balance = newBalance;
+        dateCreated = new java.util.Date();
+    }
+
+    // Accessor method for id
+    int getId() {
+        return id;
+    }
+    // Mutator method for id
+    void setId(int newId) {
+        id = newId;
+    }
+    // Accessor method for balance
+    double getBalance() {
+        return balance;
+    }
+    // Mutator method for balance
+    void setBalance(double newBalance) {
+        balance = newBalance;
+    }
+    // Accessor method for annual interest rate
+    double getAnnualInterestRate() {
+        return annualInterestRate;
+    }
+    // Mutator method for annual interest rate
+    void setAnnualInterestRate(double newAnnualInterestRate) {
+        annualInterestRate = newAnnualInterestRate;
+    }
+    // Accessor method for date created
+    java.util.Date getDateCreated() {
+        return dateCreated;
+    }
+
+    // Mehod that returns the monthly interest rate
+    double getMonthlyInterestRate() {
+        return annualInterestRate / 12 / 100;
+    }
+    // Method that returns the monthly interest
+    double getMonthlyInterest() {
+        return getBalance() * getMonthlyInterestRate();
+    }
+    // Method to withdraw a specified amount from the account
+    void withdraw(double amount) {
+        setBalance(getBalance() - amount);
+    }
+    // Method to deposit a specified amount to the account
+    void deposit(double amount) {
+        setBalance(getBalance() + amount);
+    }
+}
+
+public class TestAccount {
+    public static void main(String[] args) {
+        // Create an account with id 1122, balance $20,000, and annual interest rate 4.5%
+        Account account = new Account(1122, 20000);
+        account.setAnnualInterestRate(4.5);
+        // Withdraw $2,500 from the account
+        account.withdraw(2500);
+        // Deposit $3,000 to the account
+        account.deposit(3000);
+        // Display the balance, monthly interest, and date created
+        System.out.println("Balance: $" + account.getBalance());
+        System.out.println("Monthly Interest: $" + account.getMonthlyInterest());
+        System.out.println("Date Created: " + account.getDateCreated());
+    }
+}
