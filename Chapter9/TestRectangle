@@ -1,0 +1,51 @@
+/*
+ * A program that defines a Rectangle class with methods to calculate the area and perimeter of a rectangle.
+ * Tests the Rectangle class by creating two rectangles and displaying their dimensions, area, and perimeter.
+ * Author: Emily Rhodes
+ * Date: February 17, 2026
+ * Class: TESD 1800
+ */
+
+class Rectangle {
+    // The width and height of the rectangle
+    double width = 1.0;
+    double height = 1.0;
+    // No-arg constructor that creates a default rectangle
+    Rectangle() {}
+    // Constructor that creates a rectangle with the specified width and height
+    Rectangle(double newWidth, double newHeight) {
+        width = newWidth;
+        height = newHeight;
+    }
+    // Method to calculate the area of the rectangle
+    double getArea() {
+        return width * height;
+    }
+    // Method to calculate the perimeter of the rectangle
+    double getPerimeter() {
+        return 2 * (width + height);
+    }
+    // Set a new width and height for the rectangle
+    void setDimensions(double newWidth, double newHeight) {
+        width = newWidth;
+        height = newHeight;
+    }
+}  
+
+// Test the Rectangle class
+public class TestRectangle {
+    public static void main(String[] args) {
+        // Create a rectangle that is 4 x 40
+        Rectangle rectangle1 = new Rectangle(4, 40);
+        // Create a rectangle that is 3.5 x 35.9
+        Rectangle rectangle2 = new Rectangle(3.5, 35.9);
+        // Display the area and perimeter of rectangle1
+        System.out.println("Rectangle 1: width = " + rectangle1.width + ", height = " + rectangle1.height);
+        System.out.println("Area: " + rectangle1.getArea());
+        System.out.println("Perimeter: " + rectangle1.getPerimeter());
+        // Display the area and perimeter of rectangle2
+        System.out.println("Rectangle 2: width = " + rectangle2.width + ", height = " + rectangle2.height);
+        System.out.println("Area: " + rectangle2.getArea());
+        System.out.println("Perimeter: " + rectangle2.getPerimeter());
+    }
+}
