@@ -1,0 +1,119 @@
+/*
+ * Create a myInteger class that looks at an integer and returns whether it is even, odd, or prime.
+ * The class also compares the integer to another integer or another MyInteger object.
+ * The class also has static methods that convert a character array and a string into an integer value.
+ * Write a test program that creates a MyInteger object for the value 17 and displays the result of the methods.
+ * 
+ * Author: Emily Rhodes
+ * Date: 2026-02-24
+ * Class: TESD 1800
+*/
+// Create the MyInteger class
+class MyInteger {
+    // Declare the variables
+    private int value;
+    // Constructor that creates a MyInteger object for the specified int value
+    MyInteger(int newValue) {
+        value = newValue;
+    }
+    // Non-static getter method that returns the int value
+    int getValue() {
+        return value;
+    }
+
+    // Non-static methods that return true if the value in this object is even, odd, or prime, respectively
+    boolean isEven() {
+        return value % 2 == 0;
+    }
+    boolean isOdd() {
+        return value % 2 != 0;
+    }
+    boolean isPrime() {
+        if (value <= 1) {
+            return false;
+        }
+        for (int i = 2; i <= Math.sqrt(value); i++) {
+            if (value % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Static methods that return true if the specified value is even, odd, or prime, respectively
+    static boolean isEven(int newValue) {
+        return newValue % 2 == 0;
+    }
+    static boolean isOdd(int newValue) {
+        return newValue % 2 != 0;
+    }
+    static boolean isPrime(int newValue) {
+        if (newValue <= 1) {
+            return false;
+        }
+        for (int i = 2; i <= Math.sqrt(newValue); i++) {
+            if (newValue % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Static methods that return true if MyInteger is even, odd, or prime, respectively
+    static boolean isEven(MyInteger myInteger) {
+        return isEven(myInteger.getValue());
+    }
+    static boolean isOdd(MyInteger myInteger) {
+        return isOdd(myInteger.getValue());
+    }
+    static boolean isPrime(MyInteger myInteger) {
+        return isPrime(myInteger.getValue());
+    }
+
+    // Non-static methods that return true if the value in this object is equal to the specified value
+    boolean equals(int newValue) {
+        return value == newValue;
+    }
+    boolean equals(MyInteger myInteger) {
+        return value == myInteger.getValue();
+    }
+
+    // Static method that converts an array of numeric characters to an int value
+    static int parseInt(char[] charArray) {
+        String str = new String(charArray);
+        return Integer.parseInt(str);
+    }
+
+    // Static method that converts a string into an int value
+    static int parseInt(String str) {
+        return Integer.parseInt(str);
+    }
+}
+
+// Create the TestMyInteger class
+public class TestMyInteger {
+    public static void main(String[] args) {
+        // Create a MyInteger object with the value 17
+        MyInteger myInteger = new MyInteger(17);
+        // Test the non-static methods
+        System.out.println("Value: " + myInteger.getValue());
+        System.out.println("Is even? " + myInteger.isEven());
+        System.out.println("Is odd? " + myInteger.isOdd());
+        System.out.println("Is prime? " + myInteger.isPrime());
+        // Test the static methods
+        System.out.println("Is 10 even? " + MyInteger.isEven(10));
+        System.out.println("Is 10 odd? " + MyInteger.isOdd(10));
+        System.out.println("Is 10 prime? " + MyInteger.isPrime(10));
+        System.out.println("Is my integer even? " + MyInteger.isEven(myInteger));
+        System.out.println("Is my integer odd? " + MyInteger.isOdd(myInteger));
+        System.out.println("Is my integer prime? " + MyInteger.isPrime(myInteger));
+        // Test the equals methods
+        System.out.println("Does my integer equal 17? " + myInteger.equals(17));
+        System.out.println("Does my integer equal a new integer with value 5? " + myInteger.equals(new MyInteger(5)));
+        // Test the parseInt methods
+        char[] charArray = {'1', '2', '3'};
+        System.out.println("Parsed int from char array: " + MyInteger.parseInt(charArray));
+        String str = "1800";
+        System.out.println("Parsed int from string: " + MyInteger.parseInt(str));
+    }
+}
