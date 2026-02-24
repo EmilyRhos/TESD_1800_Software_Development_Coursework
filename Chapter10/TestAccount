@@ -1,0 +1,139 @@
+/*
+ * A program that creates an account with a balance and an interest rate.
+ * The program will calculate the interest and display the new balance after deposits and withdrawals.
+ * The program then runs an ATM-like program to test functionality.
+ * Author: Emily Rhodes
+ * Date 2026-02-24
+ * Class: TESD 1800
+*/
+
+import java.util.Scanner;
+
+// Create the Account class
+class Account {
+    // Declare the variables for the id, balance, interest rate, and date created
+    private int id = 0;
+    private double balance = 0.0;
+    private double annualInterestRate = 0.0;
+    private java.util.Date dateCreated;
+    // No-arg constructor that creates a default account
+    Account() {
+        dateCreated = new java.util.Date();
+    }
+    // Constructor that creates an account with the specified id and balance
+    Account(int newId, double newBalance) {
+        id = newId;
+        balance = newBalance;
+        dateCreated = new java.util.Date();
+    }
+
+    // Accessor method for id
+    int getId() {
+        return id;
+    }
+    // Mutator method for id
+    void setId(int newId) {
+        id = newId;
+    }
+    // Accessor method for balance
+    double getBalance() {
+        return balance;
+    }
+    // Mutator method for balance
+    void setBalance(double newBalance) {
+        balance = newBalance;
+    }
+    // Accessor method for annual interest rate
+    double getAnnualInterestRate() {
+        return annualInterestRate;
+    }
+    // Mutator method for annual interest rate
+    void setAnnualInterestRate(double newAnnualInterestRate) {
+        annualInterestRate = newAnnualInterestRate;
+    }
+    // Accessor method for date created
+    java.util.Date getDateCreated() {
+        return dateCreated;
+    }
+
+    // Mehod that returns the monthly interest rate
+    double getMonthlyInterestRate() {
+        return annualInterestRate / 12 / 100;
+    }
+    // Method that returns the monthly interest
+    double getMonthlyInterest() {
+        return getBalance() * getMonthlyInterestRate();
+    }
+    // Method to withdraw a specified amount from the account
+    void withdraw(double amount) {
+        setBalance(getBalance() - amount);
+    }
+    // Method to deposit a specified amount to the account
+    void deposit(double amount) {
+        setBalance(getBalance() + amount);
+    }
+}
+
+// Create 10 accounts and test the Account class with an ATM-like program
+public class TestAccount {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+        // Create 10 accounts in an array with id 0, 1,..., 9, and initial balances of $100
+        Account[] accounts = new Account[10];
+        for (int i = 0; i < accounts.length; i++) {
+            accounts[i] = new Account(i, 100);
+        }
+
+        // Run forever
+        while(true) {
+
+            int id;
+            while(true) {
+                // Prompt the user to enter an id. If the id is entered incorrectly, ask the user to enter a correct id
+                System.out.print("Enter an id for your account: ");
+                id = input.nextInt();
+                if (id >= 0 && id < accounts.length) {
+                    break;
+                }
+                System.out.println("Invalid id. Please enter an id between 0 and 9.");
+            }
+
+            // Show the main menu for the chosen account
+            Account currentAccount = accounts[id];
+        
+            boolean exit = false;
+            while(!exit) {
+                System.out.println("\nMAIN MENU");
+                System.out.println("---------");
+                System.out.println("1: Check Balance");
+                System.out.println("2: Withdrawal");
+                System.out.println("3: Deposit");
+                System.out.println("4: Exit");
+                System.out.print("Select a number: ");
+                int selection = input.nextInt();
+            
+                // Display the current balance
+                if (selection == 1) {
+                    System.out.println("Current balance: $" + currentAccount.getBalance());
+                // Withdraw money from the account
+                } else if (selection == 2) {
+                    System.out.print("Enter an amount to withdraw: ");
+                    double amount = input.nextDouble();
+                    currentAccount.withdraw(amount);
+                // Deposit money into the account
+                } else if (selection == 3) {
+                    System.out.print("Enter an amount to deposit: ");
+                    double amount = input.nextDouble();
+                    currentAccount.deposit(amount);
+                // Exit the main menu
+                } else if (selection == 4) {
+                    exit = true;
+                    break;
+                } else {
+                    System.out.println("Invalid selection. Please enter a number between 1 and 4.");
+                }
+            }    
+        }
+    }
+}
