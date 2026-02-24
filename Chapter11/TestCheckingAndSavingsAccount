@@ -1,0 +1,155 @@
+/*
+ * A program that creates an account with a balance and an interest rate.
+ * The program will calculate the interest and display the new balance after deposits and withdrawals.
+ * The program has checking and savings accounts that inherit from the Account class. 
+ * The checking account has an overdraft limit, while the savings account does not allow overdrafts.
+ * 
+ * Author: Emily Rhodes
+ * Date 2026-02-24
+ * Class: TESD 1800
+*/
+
+// Define superclass Account
+class Account {
+    // Declare the variables for the id, balance, interest rate, and date created
+    private int id = 0;
+    private double balance = 0.0;
+    private double annualInterestRate = 0.0;
+    private java.util.Date dateCreated;
+    // No-arg constructor that creates a default account
+    Account() {
+        dateCreated = new java.util.Date();
+    }
+    // Constructor that creates an account with the specified id and balance
+    Account(int newId, double newBalance) {
+        id = newId;
+        balance = newBalance;
+        dateCreated = new java.util.Date();
+    }
+
+    // Accessor method for id
+    int getId() {
+        return id;
+    }
+    // Mutator method for id
+    void setId(int newId) {
+        id = newId;
+    }
+    // Accessor method for balance
+    double getBalance() {
+        return balance;
+    }
+    // Mutator method for balance
+    void setBalance(double newBalance) {
+        balance = newBalance;
+    }
+    // Accessor method for annual interest rate
+    double getAnnualInterestRate() {
+        return annualInterestRate;
+    }
+    // Mutator method for annual interest rate
+    void setAnnualInterestRate(double newAnnualInterestRate) {
+        annualInterestRate = newAnnualInterestRate;
+    }
+    // Accessor method for date created
+    java.util.Date getDateCreated() {
+        return dateCreated;
+    }
+
+    // Mehod that returns the monthly interest rate
+    double getMonthlyInterestRate() {
+        return annualInterestRate / 12 / 100;
+    }
+    // Method that returns the monthly interest
+    double getMonthlyInterest() {
+        return getBalance() * getMonthlyInterestRate();
+    }
+    // Method to withdraw a specified amount from the account
+    void withdraw(double amount) {
+        setBalance(getBalance() - amount);
+    }
+    // Method to deposit a specified amount to the account
+    void deposit(double amount) {
+        setBalance(getBalance() + amount);
+    }
+}
+
+// Create the CheckingAccount class that extends Account
+class CheckingAccount extends Account {
+    // Declare the variable for the overdraft limit
+    private double overdraftLimit = 0.0;
+    // No-arg constructor that creates a default checking account
+    CheckingAccount() {
+        super();
+    }
+    // Constructor that creates a checking account with the specified id, balance, and overdraft limit
+    CheckingAccount(int newId, double newBalance, double newOverdraftLimit) {
+        super(newId, newBalance);
+        overdraftLimit = newOverdraftLimit;
+    }
+    // Getter and setter methods for overdraft limit
+    double getOverdraftLimit() {
+        return overdraftLimit;
+    }
+    void setOverdraftLimit(double newOverdraftLimit) {
+        overdraftLimit = newOverdraftLimit;
+    }
+    // Override the withdraw method to allow overdrafts up to the overdraft limit
+    @Override
+    void withdraw(double amount) {
+        if (getBalance() - amount >= -overdraftLimit) {
+            super.withdraw(amount);
+        } else {
+            System.out.println("Withdrawal denied. Overdraft limit exceeded.");
+        }
+    }
+}
+
+// Create the SavingsAccount class that extends Account
+class SavingsAccount extends Account {
+    // No-arg constructor that creates a default savings account
+    SavingsAccount() {
+        super();
+    }
+    // Constructor that creates a savings account with the specified id and balance
+    SavingsAccount(int newId, double newBalance) {
+        super(newId, newBalance);
+    }
+    // Override the withdraw method to prevent overdrafts
+    @Override
+    void withdraw(double amount) {
+        if (getBalance() - amount >= 0) {
+            super.withdraw(amount);
+        } else {
+            System.out.println("Withdrawal denied. Insufficient funds.");
+        }
+    }
+}
+
+// Create the TestCheckingAndSavingsAccount class with a main method to test the functionality of the checking and savings accounts
+public class TestCheckingAndSavingsAccount {
+    public static void main(String[] args) {
+        // Create a checking account with id 1122, balance $20,000, overdraft limit $500, and annual interest rate 4.5%
+        CheckingAccount account = new CheckingAccount(1122, 20000, 500);
+        account.setAnnualInterestRate(4.5);
+        // Withdraw $2,500 from the account
+        account.withdraw(2500);
+        // Deposit $3,000 to the account
+        account.deposit(3000);
+        // Display the balance, monthly interest, and date created
+        System.out.println("Balance: $" + account.getBalance());
+        System.out.println("Monthly Interest: $" + account.getMonthlyInterest());
+        System.out.println("Date Created: " + account.getDateCreated());
+        // Create a savings account with id 1123, balance $20,000, and annual interest rate 4.5%
+        SavingsAccount savingsAccount = new SavingsAccount(1123, 20000);
+        savingsAccount.setAnnualInterestRate(4.5);
+        // Withdraw $2,500 from the account
+        savingsAccount.withdraw(2500);
+        // Deposit $3,000 to the account
+        savingsAccount.deposit(3000);
+        // Display the balance, monthly interest, and date created
+        System.out.println("Balance: $" + savingsAccount.getBalance());
+        System.out.println("Monthly Interest: $" + savingsAccount.getMonthlyInterest());
+        System.out.println("Date Created: " + savingsAccount.getDateCreated());
+    }
+}
