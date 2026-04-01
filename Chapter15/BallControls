@@ -1,0 +1,83 @@
+/*
+ * A program that moves the ball in a pane. 
+ * Define a pane class for displaying the ball and provide the methods for moving the ball left, right, up, and down.
+ * Check the boundary to prevent the ball from moving out of sight completely.
+ * Bind a click action to the buttons. 
+ * Use an "if" statement to check whether circle is going off the scene or not.
+ * 
+ * Author: Emily Rhodes
+ * Date: 04/01/2026
+ * Course: TESD 1800
+*/
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
+
+public class BallControls extends Application {
+
+    @Override
+    public void start(Stage stage) {
+
+        Circle circle = new Circle(20, Color.GOLD);
+        Pane pane = new Pane();
+        pane.getChildren().add(circle);
+        circle.setCenterX(210);
+        circle.setCenterY(210);
+
+        Button left  = new Button("Left");
+        Button right = new Button("Right");
+        Button up    = new Button("Up");
+        Button down  = new Button("Down");
+
+        double radius = circle.getRadius();
+        double step = 5.0;
+
+        left.setOnAction(e -> {
+            if (circle.getCenterX() - step - radius >= 0) {
+                circle.setCenterX(circle.getCenterX() - step);
+            }
+        });
+
+        right.setOnAction(e -> {
+            if (circle.getCenterX() + step + radius <= pane.getWidth()) {
+                circle.setCenterX(circle.getCenterX() + step);
+            }
+        });
+
+        up.setOnAction(e -> {
+            if (circle.getCenterY() - step - radius >= 0) {
+                circle.setCenterY(circle.getCenterY() - step);
+            }
+        });
+
+        down.setOnAction(e -> {
+            if (circle.getCenterY() + step + radius <= pane.getHeight()) {
+                circle.setCenterY(circle.getCenterY() + step);
+            }
+        });
+
+        HBox box = new HBox(10, left, right, up, down);
+        box.setAlignment(Pos.CENTER);
+        box.setPadding(new Insets(8));
+
+        BorderPane root = new BorderPane();
+        root.setCenter(pane);
+        root.setBottom(box);
+
+        Scene scene = new Scene(root, 420, 420);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
