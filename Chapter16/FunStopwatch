@@ -1,0 +1,87 @@
+
+/*
+ * Write a program that allows the user to enter time in seconds in the text field and press the Enter key to count down the seconds.
+ * The remaining seconds are redisplayed every one second. 
+ * When the seconds are expired, the program starts to play music continuously.
+ * 
+ * Author: Emily Rhodes
+ * Date: 04/06/2026
+ * Course: TESD 1800
+*/
+import javafx.application.Application;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.stage.Stage;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+
+public class FunStopwatch extends Application {
+    private Timeline timeline;
+    private int countdown;
+    
+    // Method for the countdown logic
+    public void start(Stage primaryStage) {
+        TextField input = new TextField();
+        input.setPromptText("Enter time in seconds, then press Enter");
+        input.setAlignment(Pos.CENTER);
+
+        input.setOnAction(e -> {
+            try {
+                countdown = Integer.parseInt(input.getText());
+                startCountdown(input);
+            } catch (NumberFormatException ex) {
+                input.setText("Please enter a valid number");
+            }
+        });
+        
+        // House the input field
+        VBox root = new VBox(10, input);
+        root.setAlignment(Pos.CENTER);
+
+        // Create the scene and set the stage
+        Scene scene = new Scene(root, 300, 200);
+        
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+        // Set focus on the prompt
+        root.requestFocus();
+    }
+
+    // Method to start the countdown
+    private void startCountdown(TextField input) {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+            if (countdown > 0) {
+                countdown--;
+                input.setText(String.valueOf(countdown));
+            } else {
+                timeline.stop();
+                playMusic();
+            }
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+    }
+
+    // Method to play music when countdown reaches zero
+    private void playMusic() {
+        try {
+            String musicURL = "https://liveexample.pearsoncmg.com/common/audio/anthem/anthem0.mp3";
+            Media sound = new Media(musicURL);
+            MediaPlayer mediaPlayer = new MediaPlayer(sound);
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE); 
+            mediaPlayer.play();
+        } catch (Exception e) {
+            System.out.println("Error playing music: " + e.getMessage());
+        }
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
