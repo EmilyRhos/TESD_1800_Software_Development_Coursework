@@ -1,0 +1,24 @@
+/*
+ * Write a program to create a file named Exercise17_01.txt if it does not exist. 
+ * Append new data to it if it already exists. 
+ * Write 100 integers created randomly into the file using text I/O. Integers are separated by a space.
+ * 
+ * Author: Emily Rhodes
+ * Date: 04/14/2026
+ * Course: TESD 1800
+*/
+
+public class Exercise17_01 {
+    public static void main(String[] args) {
+        // Try-catch to create or append to the file
+        try (java.io.PrintWriter output = new java.io.PrintWriter(new java.io.FileOutputStream("Exercise17_01.txt", true))) {
+            // Loop to generate and write 100 random integers to the file
+            for (int i = 0; i < 100; i++) {
+                int randomInt = (int)(Math.random() * 100); 
+                output.print(randomInt + " ");
+            }
+        } catch (java.io.IOException e) {
+            System.out.println("An error occurred while writing to the file: " + e.getMessage());
+        }
+    }
+}
