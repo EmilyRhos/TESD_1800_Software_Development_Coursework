@@ -1,0 +1,49 @@
+/*
+* Write a program that contains 2 methods:
+* Method 1: A method to create a file named Exercise17_03.dat if it does not exist. 
+* Append new data to it if it already exists. 
+* Write 100 integers created randomly into the file using writeInt(int) in DataOutputStream. 
+* Integers are separated by a space.
+* 
+* Method 2: A method that reads the integers from the file and finds the sum of the integers. 
+* Assume the file contains an unspecified number of integers.
+*
+* Author: Emily Rhodes
+* Date: 04/24/2026
+* Course: TESD 1800
+*/
+
+public class Exercise17_03 {
+    // Main method to execute the two methods
+    public static void main(String[] args) {
+        writeRandomIntegersToFile();
+        int sum = readIntegersAndCalculateSum();
+        System.out.println("The sum of the integers in the file is: " + sum);
+    }
+
+    // Method to create or append to the file and write 100 random integers
+    public static void writeRandomIntegersToFile() {
+        try (java.io.DataOutputStream output = new java.io.DataOutputStream(new java.io.FileOutputStream("Exercise17_03.dat", true))) {
+            for (int i = 0; i < 100; i++) {
+                int randomInt = (int)(Math.random() * 100);
+                output.writeInt(randomInt);
+            }
+        } catch (java.io.IOException e) {
+            System.out.println("An error occurred while writing to the file: " + e.getMessage());
+        }
+    }
+
+    // Method to read integers from the file and calculate their sum
+    public static int readIntegersAndCalculateSum() {
+        int sum = 0;
+        try (java.io.DataInputStream input = new java.io.DataInputStream(new java.io.FileInputStream("Exercise17_03.dat"))) {
+            while (input.available() > 0) {
+                sum += input.readInt();
+            }
+        } catch (java.io.IOException e) {
+            System.out.println("An error occurred while reading from the file: " + e.getMessage());
+        }
+        return sum;
+    }
+
+}
