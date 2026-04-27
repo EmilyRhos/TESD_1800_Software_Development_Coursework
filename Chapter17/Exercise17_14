@@ -1,0 +1,44 @@
+/*
+* Write a program that prompts a user to enter in input file name and an output file name.
+* Encode the input file by adding 5 to every byte in the file.
+* Write the encoded data to the output file.
+*
+* Author: Emily Rhodes
+* Date: 04/27/2026
+* Course: TESD 1800
+*/
+import java.io.*;
+import java.util.Scanner;
+
+public class Exercise17_14 {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.print("Enter input file name: ");
+        String inputFileName = scanner.nextLine();
+        
+        System.out.print("Enter output file name: ");
+        String outputFileName = scanner.nextLine();
+        
+        encodeFile(inputFileName, outputFileName);
+        
+        scanner.close();
+    }
+
+    // Method to encode the file by adding 5 to every byte
+    public static void encodeFile(String inputFileName, String outputFileName) {
+        try (
+            FileInputStream inputStream = new FileInputStream(inputFileName);
+            FileOutputStream outputStream = new FileOutputStream(outputFileName);
+        ) {
+            int byteData;
+            while ((byteData = inputStream.read()) != -1) {
+                outputStream.write(byteData + 5);
+            }
+            System.out.println("File encoded successfully.");
+        } 
+        catch (IOException ex) {
+            System.out.println("Error processing files: " + ex.getMessage());
+        }
+    }
+}
