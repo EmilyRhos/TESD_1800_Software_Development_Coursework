@@ -1,0 +1,122 @@
+/*
+* This program displays a city map and a car.
+* It allows the user to navigate through the map using the arrow keys. 
+* The user can freely move the car around the roads on the map.
+*
+* Author: Emily Rhodes
+* Date: 05/12/2026
+* Course: TESD 1800
+*/
+
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
+import javafx.stage.Stage;
+
+// Create the map
+public class Final extends Application {
+
+    // Constants for creating the grid
+    private static final int TILE_SIZE = 50; 
+    private static final int ROWS = 10;
+    private static final int COLS = 10;
+
+    // 0 = Building, 1 = Road
+    private final int[][] mapData = {
+        {0, 0, 1, 0, 0, 0, 0, 0, 1, 0},
+        {0, 0, 1, 0, 0, 0, 0, 0, 1, 0},
+        {0, 0, 1, 0, 0, 0, 0, 0, 1, 0},
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        {0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        {0, 0, 0, 0, 0, 0, 0, 0, 1, 0}
+    };
+
+    @Override
+    public void start(Stage primaryStage) {
+        Pane root = new Pane();
+
+        // Upload the map image and set it as the background
+        Image mapImage = new Image("https://raw.githubusercontent.com/EmilyRhos/TESD_1800_Software_Development_Coursework/main/Chapter17/Final/Resources/mapv2.png");
+        ImageView mapView = new ImageView(mapImage);
+        mapView.setFitWidth(COLS * TILE_SIZE);
+        mapView.setFitHeight(ROWS * TILE_SIZE);
+
+        root.getChildren().add(mapView);
+
+        // Create the car and add it to the root pane
+        createCar();
+        root.getChildren().add(carView);
+
+        Scene scene = new Scene(root, COLS * TILE_SIZE, ROWS * TILE_SIZE);
+        
+        // Key presses to move the car
+        scene.setOnKeyPressed((KeyEvent event) -> {
+            switch (event.getCode()) {
+                case UP:    moveCar(0, -1, 0);    break;
+                case DOWN:  moveCar(0, 1, 180);   break;
+                case LEFT:  moveCar(-1, 0, 270);  break;
+                case RIGHT: moveCar(1, 0, 90);    break;
+                default: break;
+            }
+        });
+
+        primaryStage.setTitle("City Map");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    private int carX = 2; // Starting Column
+    private int carY = 0; // Starting Row
+    private ImageView carView;
+
+    // Method to create the car and set its initial position
+    private void createCar() {
+        Image carImage = new Image("https://raw.githubusercontent.com/EmilyRhos/TESD_1800_Software_Development_Coursework/main/Chapter17/Final/Resources/yellowCar.png");
+        carView = new ImageView(carImage);
+        carView.setFitWidth(TILE_SIZE - 10); 
+        carView.setFitHeight(TILE_SIZE - 10);
+    
+        // Center the car image within the tile space
+        carView.setX(5); 
+        carView.setY(5);
+
+        updateCarVisuals();
+    }
+
+    // Method to update the car's position on the screen
+    private void moveCar(int deltaX, int deltaY, double rotation) {
+        int nextX = carX + deltaX;
+        int nextY = carY + deltaY;
+
+        // Boundary check + Road check
+        if (nextX >= 0 && nextX < COLS && nextY >= 0 && nextY < ROWS) {
+            if (mapData[nextY][nextX] == 1) {
+                carX = nextX;
+                carY = nextY;
+                carView.setRotate(rotation);
+                updateCarVisuals();
+            }
+        }   
+    }
+
+    // Sync the car's visual position with its grid coordinates
+    private void updateCarVisuals() {
+        carView.setLayoutX(carX * TILE_SIZE);
+        carView.setLayoutY(carY * TILE_SIZE);
+    }
+}
